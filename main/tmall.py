@@ -15,7 +15,8 @@ def get_title(detail_html):
     soap = bs4.BeautifulSoup(detail_html)
     pattern = r'<title>(.*)</title>'
     title = re.findall(pattern, str(soap.select('title')[0]).decode('utf-8'))[0]
-    return title
+
+    return re.sub(r'([(^\.)\/\.:<>])', '', title)
 
 
 if __name__ == '__main__':
@@ -27,7 +28,8 @@ if __name__ == '__main__':
         detail_html = response.read()
         img_src = get_imgs(detail_html)
         folder_name = '../imgs/%s' % get_title(detail_html)
-        os.mkdir(folder_name)
+        if os.path.exists(folder_name) is False:
+            os.mkdir(folder_name)
         for idx, src in enumerate(img_src):
             print 'downloading now , please wait.'
             img_url = 'http:' + re.sub(r'\_\d+x\d+q\d+\.jpg$', "", src)
