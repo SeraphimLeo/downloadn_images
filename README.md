@@ -12,7 +12,7 @@ NOW, just run it.
 
 # how to use
 
-You will see `welcome, please pass the URL and press ENTER!` on your screen when you ran this tool. Follow the tips pass the URL and press enter , after some seconds the images can be download in the `imgs` folder which named by the page title.
+You will see 'welcome, please pass the URL and press ENTER!' on your screen when you ran this tool. Follow the tips pass the URL and press enter , after some seconds the images can be downloaded in the `imgs` folder which named by the page title.
 
 ***
 
