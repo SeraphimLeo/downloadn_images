@@ -23,7 +23,7 @@ def get_detail_imgs(detail_html):
     #     'div#description div.content img.img-ks-lazyload')]
 
     for img in soap.select('div#description div.content img.img-ks-lazyload'):
-        if img.attrs.get('alt') is not None:
+        if 'desc_anchor' not in img.attrs.get('class'):
             yield img.attrs.get('src')
 
 
