@@ -48,7 +48,7 @@ def load_page(url):
     while (True):
         driver.execute_script('window.scrollTo(0,%d)' % h)
         h = h + 500
-        time.sleep(1)
+        time.sleep(3)
         currentHeight = driver.execute_script(
             'return document.body.scrollHeight')
         print u'scroll\t', h, '\total\t', currentHeight
@@ -100,7 +100,8 @@ if __name__ == '__main__':
                 os.mkdir(detail_img_folder)
 
             img_data = urllib.urlopen(url=src).read()
-            f = file('%s/%s.jpg' % (detail_img_folder, str(idx)), 'wb')
+            ext = src.split('.')[-1:][0]
+            f = file('%s/%s.%s' % (detail_img_folder, str(idx), str(ext)), 'wb')
             f.write(img_data)
             f.close()
 
