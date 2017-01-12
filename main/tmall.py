@@ -48,16 +48,32 @@ def load_page(url):
     while (True):
         driver.execute_script('window.scrollTo(0,%d)' % h)
         h = h + 500
-        time.sleep(3)
+        time.sleep(2)
         currentHeight = driver.execute_script(
             'return document.body.scrollHeight')
-        print u'scroll\t', h, '\total\t', currentHeight
+        print u'web page loading now :\t%s/%s' % (h, currentHeight)
         if currentHeight <= h:
             print u'analysis page, please wait...'
             break
     page_source = driver.page_source.encode('utf-8')
 
     return page_source
+
+
+def download_img(a, b, c):
+    per = 100.0 * a * b / c
+
+    sys.stdout.write(' ' * 10 + '\r')
+    sys.stdout.flush()
+
+    if per > 100:
+        per = 100
+        sys.stdout.write('%.2f%%\n' % per)
+        sys.stdout.flush()
+    else:
+        sys.stdout.write('%.2f%%\r' % per)
+        sys.stdout.flush()
+
 
 
 if __name__ == '__main__':
@@ -86,10 +102,10 @@ if __name__ == '__main__':
                 os.mkdir(focus_img_folder)
 
             img_url = 'http:' + re.sub(r'\_\d+x\d+q\d+\.jpg$', "", src)
-            img_data = urllib.urlopen(url=img_url).read()
-            f = file('%s/%s.jpg' % (focus_img_folder, str(idx)), 'wb')
-            f.write(img_data)
-            f.close()
+            img_filename = '%s/%s.jpg' % (
+                focus_img_folder, str(idx))
+            urllib.urlretrieve(url=img_url, filename=img_filename,
+                               reporthook=download_img)
 
         for idx, src in enumerate(detail_img_src):
             print 'download detail images, please wait.'
@@ -99,11 +115,11 @@ if __name__ == '__main__':
                 print u'create the detail image folder'
                 os.mkdir(detail_img_folder)
 
-            img_data = urllib.urlopen(url=src).read()
             ext = src.split('.')[-1:][0]
-            f = file('%s/%s.%s' % (detail_img_folder, str(idx), str(ext)), 'wb')
-            f.write(img_data)
-            f.close()
+            img_filename = '%s/%s.%s' % (
+                detail_img_folder, str(idx), str(ext))
+            urllib.urlretrieve(url=src, filename=img_filename,
+                               reporthook=download_img)
 
         print 'download images complete!'
-        print ''
+        print '\n\n'
